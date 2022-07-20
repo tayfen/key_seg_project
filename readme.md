@@ -25,6 +25,13 @@ prep_datast_for_seg.ipynb
 ```
 key_segmentation_training.ipynb
 ```
+* Пробуем с помощью Gradio сделать приложение для сегментации произвольных фотографий ключей
+```
+последняя часть в dlc_final_project.ipynb
+```
+### gradio app
+![gradio](https://i.gyazo.com/b67744af0dafdf517e33cbe4a2acf73e.png)
+
 
 # Особенности сегментации
 * Аугментация
@@ -41,8 +48,12 @@ key_segmentation_training.ipynb
 
 ## Запуск
 
+* Весь pipeline с готовыми моделями, без тренировки
+```
+dlc_final_project.ipynb
+```
+
 * В ноутбуках есть ссылки на часть данных
-* Итоговые модели детектора и сегментатора в папке /models/
 * Для тренировки и работы с детектором используется mmdetection (необходима установка - в ноутбуке все есть)
 
 ### Дальнейшие планы
@@ -54,7 +65,6 @@ https://arxiv.org/abs/1704.08545
 Rory Smith, Tilo Burghardt
 DeepKey: Towards End-to-End Physical Key Replication From a Single Photograph
 https://arxiv.org/abs/1811.01405
-
 
 ## Использование данных и моделей
 
