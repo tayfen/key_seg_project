@@ -8,6 +8,8 @@ from torch import Tensor
 import torch.nn as nn
 import numpy as np
 import logging
+import random
+from PIL import Image
 
 # в ходе экспериментов пробовал различные размеры, начинал с маленьких, но кажется, что чем больше информации - тем лучше, так что лучше не сжимать
 # аналогичная история с каналами, начинал с 1 канальных изображений, но решил оставить 3 канальные входные
@@ -29,7 +31,7 @@ class SquarePad:
 		padding = (hp, vp, hp, vp)
 		return TF.pad(image, padding, 0, 'constant')
   
-class RandomRotation(transforms.RandomRotation):
+class RandomRotation(tt.RandomRotation):
     def __init__(self, *args, **kwargs):
         super(RandomRotation, self).__init__(*args, **kwargs) # let super do all the work
 
@@ -55,31 +57,31 @@ class FilteredKeySegDataset(Dataset):
         
         img_w, img_h = image.size
         # Random crop
-        i, j, h, w = transforms.RandomCrop.get_params(
+        i, j, h, w = tt.RandomCrop.get_params(
             image, output_size=(img_h - CROP, img_w - CROP))
         image = TF.crop(image, i, j, h, w)
         mask = TF.crop(mask, i, j, h, w)
 
-        common_transform = transforms.Compose([
+        common_transform = tt.Compose([
                     SquarePad(),
-                    transforms.ToTensor(),            
-                    transforms.Resize([RESCALE_SIZE, RESCALE_SIZE]),
-                    #transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
-                    #transforms.Grayscale(num_output_channels=1),
-                    #transforms.RandAugment(),
-                    #transforms.RandomHorizontalFlip(p=0.5),
+                    tt.ToTensor(),            
+                    tt.Resize([RESCALE_SIZE, RESCALE_SIZE]),
+                    #tt.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
+                    #tt.Grayscale(num_output_channels=1),
+                    #tt.RandAugment(),
+                    #tt.RandomHorizontalFlip(p=0.5),
                 ])
         
-        image_only_transform = transforms.Compose([
-                    #transforms.GaussianBlur(kernel_size=(3, 3), sigma=(0.1, 2)),
-                    transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
-                    transforms.RandomAdjustSharpness(sharpness_factor=2),
-                    #transforms.RandomAutocontrast(),
-                    #transforms.RandomEqualize(),
+        image_only_transform = tt.Compose([
+                    #tt.GaussianBlur(kernel_size=(3, 3), sigma=(0.1, 2)),
+                    tt.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
+                    tt.RandomAdjustSharpness(sharpness_factor=2),
+                    #tt.RandomAutocontrast(),
+                    #tt.RandomEqualize(),
         ]) 
         
-        mask_only_transform = transforms.Compose([
-                    transforms.Grayscale(num_output_channels=1),
+        mask_only_transform = tt.Compose([
+                    tt.Grayscale(num_output_channels=1),
         ])
 
         #image = image_only_transform(image)
