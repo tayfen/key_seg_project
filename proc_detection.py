@@ -22,7 +22,7 @@ class key_detection:
     def __init__(self):
 
         self.log = logger.info
-        self.cfg = Config.fromfile(f'{MMDETECTION_DIR}\\configs\\ssd\\ssd512_coco.py')
+        self.cfg = Config.fromfile(os.path.join(MMDETECTION_DIR, 'configs', 'ssd', 'ssd512_coco.py'))
         dataset_type = 'CocoDataset'
         # Modify dataset type and path
         self.cfg.dataset_type = dataset_type
@@ -61,14 +61,14 @@ class key_detection:
         scaled_img = self.scale_img(img, 100)
 
         #inference scaled img
-        result = inference_detector(self.model, scaled_img)
+        self.result = inference_detector(self.model, scaled_img)
 
         #scale bbox back
-        scaled_result = self.scale_back_bbox(result, (img.shape[0] / scaled_img.shape[0], img.shape[1] / scaled_img.shape[1]))
+        self.scaled_result = self.scale_back_bbox(self.result, (img.shape[0] / scaled_img.shape[0], img.shape[1] / scaled_img.shape[1]))
 
         #filter low probabilities and get the highest one
-        print(scaled_result)
-        bbox = self.filter_low_prob(scaled_result)
+        print(self.scaled_result)
+        bbox = self.filter_low_prob(self.scaled_result)
         print(bbox)
         if len(bbox[0][0]) != 5:
             self.log("key not found, check image - {path}")
