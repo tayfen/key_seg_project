@@ -1,2 +1,5 @@
 models/512_3unet_150ep.pth
 models/model_detection.pth
+models/512_3unet_50ep_3_12_2022.pth
+models/model_detection_1_12_2022.pth
+__pycache__/
